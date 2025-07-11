@@ -1,13 +1,33 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useState, useEffect } from 'react'   
 import { Link } from 'react-router-dom'
 
 const Home = () => {
+  const [weather, setWeather] = useState([])
+
+  const getWeather = async () => {
+    try {
+      const response = await axios.get(
+  '/kma/api/typ01/url/kma_sfcdd.php?tm=20150715&stn=0&help=0&authKey=Z1vkWsEaRFOb5FrBGrRTWA'
+)
+
+      setWeather(response.data)
+      console.log(response)
+      console.log('axios의 get 메서드로 데이터 받아오기 성공')
+    } catch (error) {
+      console.error('데이터 요청 실패:', error)
+    }
+  }     
+  useEffect(() => {         
+     getWeather()                    
+  }, [])
+
   return (
     <>
     <div className='flex px-8 flex-col bg-black text-white'>
        <span className='text-xl font-bold'>WF</span>
        <form className=''>
-        <input type='search' className='bg-white w-400 my-3 rounded-md px-3 py-2' 
+        <input type='search' className='bg-white placeholder-gray-500 w-400 my-3 rounded-md px-3 py-2' 
         placeholder='현재 날씨에 맞는 옷 찾기'/>
        </form>
        <ul className='flex flex-row gap-3 mb-3'>
